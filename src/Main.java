@@ -15,13 +15,23 @@ public class Main {
         var response = client.send(request, HttpResponse.BodyHandlers.ofString());
         String body = response.body();
 
-        System.out.println(body);
         var parser = new JsonParser();
         List<Map<String, String>> movies = parser.parse(body);
 
         for (Map<String, String> movie: movies) {
-            System.out.println(movie.get("fullTitle"));
+            System.out.println("Título: \u001b[1m"+ movie.get("fullTitle") + "\u001b[m");
+            System.out.println("\u001b[30m \u001b[45m Classificação: \u001b[m " + printClassificationStars(movie.get("imDbRating")));
         }
 
+    }
+
+    private static String printClassificationStars(String imDbRating) {
+        Double imdb = Double.parseDouble(imDbRating);
+        long imdbRounded = Math.round(imdb);
+        StringBuilder stars = new StringBuilder();
+        for (int i = 0; i < imdbRounded; i++) {
+            stars.append("\u2B50 ");
+        }
+        return stars.toString();
     }
 }
