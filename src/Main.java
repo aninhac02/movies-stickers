@@ -1,5 +1,7 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -21,6 +23,15 @@ public class Main {
         for (Map<String, String> movie: movies) {
             System.out.println("Título: \u001b[1m"+ movie.get("fullTitle") + "\u001b[m");
             System.out.println("\u001b[30m \u001b[45m Classificação: \u001b[m " + printClassificationStars(movie.get("imDbRating")));
+        }
+
+        StickersGenerator stickersGenerator = new StickersGenerator();
+
+        for (Map<String, String> movie: movies) {
+            InputStream inputStream = new URL(movie.get("image")).openStream();
+            var movieName = movie.get("fullTitle");
+            var fileName = "sticker" + movie.get("rank") +".png";
+            stickersGenerator.generate(inputStream, fileName, movieName);
         }
 
     }
